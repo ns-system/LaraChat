@@ -14,3 +14,8 @@
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('sample', function(){
+    return view('welcome');
+});
+//Route::controller('hello', 'PagesController');
+Route::get('hello', 'PagesController@index');

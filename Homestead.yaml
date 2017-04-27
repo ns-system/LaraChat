@@ -1,0 +1,22 @@
+ip: 192.168.10.10
+memory: 2048
+cpus: 1
+provider: virtualbox
+mariadb: true
+authorize: ~/.ssh/id_rsa.pub
+keys:
+    - ~/.ssh/id_rsa
+folders:
+    -
+        map: 'C:\xampp\htdocs\larachat'
+        to: /home/vagrant/larachat/
+sites:
+    -
+        map: larachat.app
+        to: /home/vagrant/larachat/public
+        map: larachat.phpmyadmin
+        to: /usr/share/phpmyadmin
+databases:
+    - homestead
+name: larachat
+hostname: larachat
