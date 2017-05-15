@@ -65,4 +65,12 @@ class User extends Model implements AuthenticatableContract,
     public function isConfirmed() { // ⑤ 追加
         return ! empty($this->confirmed_at);
     }
+     //リレーション
+    public function tweets() {
+        return $this->hasMany('App\Tweet');
+    }
+    public function tweets_participant() {
+        return $this->hasMany('App\Tweet');
+    }
+
 }

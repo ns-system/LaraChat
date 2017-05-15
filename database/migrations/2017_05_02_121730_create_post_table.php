@@ -12,12 +12,11 @@ class CreatePostTable extends Migration
      */
     public function up()
     {
-        Schema::create('post', function (Blueprint $table) {
-            $table->increments('post_id');
+         Schema::create('tweets', function(Blueprint $table){
+            $table->increments('tweet_id');
+            $table->integer('user_id');
+            $table->string('comment');
             $table->timestamps();
-            $table->string('comment',120);
-            $table->integer('id');
-            
         });
     }
 
