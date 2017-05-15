@@ -1,4 +1,9 @@
 <?php
+// Controller:
+// vendor\laravel\framework\src\Illuminate\Foundation\Auth\ResetsPasswords.php
+
+// // Error messages:
+// resources\lang\en\passwords.php
 
 namespace App\Http\Controllers\Auth;
 

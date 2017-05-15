@@ -41,7 +41,8 @@ return [
     |
     */
 
-    'port' => env('MAIL_PORT', 587),
+//    'port' => env('MAIL_PORT', 587),
+    'port' => env('MAIL_PORT', 25),
 
     /*
     |--------------------------------------------------------------------------
@@ -54,8 +55,12 @@ return [
     |
     */
 
-    'from' => ['address' => null, 'name' => null],
-
+//    'from' => ['address' => null, 'name' => null],
+//    'from' => ['address' => 'laravel@jf-nssinren.or.jp', 'name' => null],
+    'from' => [
+        'address' => env('MAIL_FROM_ADDRESS', null),
+        'name' => env('MAIL_FROM_NAME', null)
+    ],
     /*
     |--------------------------------------------------------------------------
     | E-Mail Encryption Protocol

@@ -38,7 +38,8 @@ trait ResetsPasswords
 
         switch ($response) {
             case Password::RESET_LINK_SENT:
-                return redirect()->back()->with('status', trans($response));
+//                return redirect()->back()->with('status', trans($response));
+                return redirect('confirm');
             case Password::INVALID_USER:
                 return redirect()->back()->withErrors(['email' => trans($response)]);
         }
@@ -51,7 +52,7 @@ trait ResetsPasswords
      */
     protected function getEmailSubject()
     {
-        return property_exists($this, 'subject') ? $this->subject : 'Your Password Reset Link';
+        return property_exists($this, 'subject') ? $this->subject : 'パスワードリセット';
     }
 
     /**
