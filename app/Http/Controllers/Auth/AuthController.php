@@ -134,7 +134,7 @@ class AuthController extends Controller
         $this->create($mailer, $request->all(), $config->get('app.key'));
  
         \Session::flash('flash_message', 'ユーザー登録確認メールを送りました。');
- 
+
         return redirect('confirm');
     }
  
