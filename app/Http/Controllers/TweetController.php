@@ -80,17 +80,18 @@ class TweetController extends Controller {
         //
     }
 
-    public function addTweet() {
+     public function addTweet() {
         try {
-            $tweet = new App\Tweet();
-            $comment = Input::get('Tweet');
-            $user_id = Input::get('userId');
-            $thread_id = Input::get('thread_id');
-            $tweet->comment = htmlspecialchars($comment);
-            $tweet->user_id = htmlspecialchars($userId);
-            $tweet->thread_idt = htmlspecialchars($threadId);
-            $tweet->save();
-            return Response::make('0');
+//            $tweet = new Tweet();
+           $comment = Input::get('tweet');
+            $userId = Input::get('userId');
+            $threadId = Input::get('threadId');
+//            $tweet->comment = e($comment);
+//            $tweet->user_id = e($userId);
+//            $tweet->thread_idt = e($threadId);
+//            $tweet->save();
+            $amarg = $comment."user".$userId."すれ".$threadId;
+            return $amarg;
         } catch (Exception $e) {
             return Response::make('1');
         }

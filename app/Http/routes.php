@@ -52,3 +52,8 @@ Route::get('/home', function(){ return view('user.welcome'); });
 //    });
 //});
 //Route::post('auth/register', function(){echo 'post';});
+//chat
+Route::get('chat', function() {
+    return view('chat');
+});
+Route::any('tweetsend', 'TweetController@addTweet');
