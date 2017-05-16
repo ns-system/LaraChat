@@ -9,6 +9,8 @@ use Response; // return Response::make()を使用するために追加
 use Input; // Input::get()を使用するために追加
 use DB; //DB操作のため
 
+use App\Tweet; // モデル定義されてなくて引っかかった
+//use User;
 class TweetController extends Controller {
 
     /**
@@ -80,18 +82,32 @@ class TweetController extends Controller {
         //
     }
 
-     public function addTweet() {
+    public function addTweet() {
         try {
-//            $tweet = new Tweet();
-           $comment = Input::get('tweet');
-            $userId = Input::get('userId');
-            $threadId = Input::get('threadId');
-//            $tweet->comment = e($comment);
-//            $tweet->user_id = e($userId);
-//            $tweet->thread_idt = e($threadId);
-//            $tweet->save();
-            $amarg = $comment."user".$userId."すれ".$threadId;
-            return $amarg;
+            $tweet = new Tweet;
+            $comment           = Input::get('tweet');
+            $userId            = Input::get('userId');
+//            $threadId          = Input::get('threadId');
+            $tweet->comment    = e($comment);
+            $tweet->user_id    = e($userId);
+//            $tweet->thread_id  = e($threadId);
+//            $tweet->user_id = 10;
+//            $tweet->comment = "Your Nice!!";
+            $tweet->save();
+//            $amarg = $comment . "user" . $userId . "すれ" . $threadId;
+
+//            if($userId === Auth::user()->id){
+                $buf = '<div class="text-right">'.
+                       '<p class="text-right">me:'.$comment.'</p>'.
+                       '</div>';
+                
+//            }else{
+//                $buf = '<div class="text-left">'.
+//                       '<p class="text-left">other:'.$comment.'</p>'.
+//                       '</div>';
+//            }
+//            $amarg = "success:{$userId}-{$comment}";
+            return $buf;
         } catch (Exception $e) {
             return Response::make('1');
         }

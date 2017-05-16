@@ -2,11 +2,13 @@
 <html lang="ja">
     <head>
         <meta charset="utf-8">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>@yield('title')</title>
         {{-- Header --}}
         @section('head')
         <link rel="stylesheet" href="https://nkmr6194.github.io/Umi/css/bootstrap.css">
         <link href="http://getbootstrap.com/examples/sticky-footer/sticky-footer.css" rel="stylesheet">
+        <link rel="stylesheet" href="{{asset('assets/css/mystyle.css')}}">
         @show
     </head>
     <body style="padding-top: 80px;">
@@ -20,7 +22,7 @@
         <div class="container-fluid">
             <div class="row">
                 @if(Auth::check())
-                <div class="col-md-3">
+                <div class="col-md-3" style="padding-top: 20px;">
                     {{-- Side Bar --}}
                     @include('layouts.sidebar')
                 </div>

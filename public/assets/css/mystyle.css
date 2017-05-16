@@ -1,0 +1,33 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 2017/05/16, 16:12:24
+    Author     : Sammy Guergachi <sguergachi at gmail.com>
+*/
+/*@import url('https://fonts.googleapis.com/css?family=Poiret+One');*/
+/*@import url('https://fonts.googleapis.com/css?family=Coming+Soon');*/
+/*@import url('https://fonts.googleapis.com/css?family=Jura');*/
+@import url('https://fonts.googleapis.com/css?family=Jura:600');
+@import url('https://fonts.googleapis.com/earlyaccess/roundedmplus1c.css');
+
+/* Tag */
+p{
+    margin: 5px 0;
+}
+h1{
+    margin: 12px 0;
+}
+/* Custom class */
+.row-flex{
+    display: flex;
+    flex-wrap: wrap;
+}
+.title{
+/*font-family: 'Poiret One', cursive;
+font-family: 'Coming Soon', cursive;*/
+font-family: 'Jura',"Rounded Mplus 1c", sans-serif;
+font-weight: 400;
+}

@@ -11,18 +11,9 @@
 |
 */
 
-Route::get('/', function () {
-    if(Auth::check()) {
-        return view('user.welcome');
-    } else {
-        return view('auth.login');
-    }
-});
+Route::get('/', function () { return Auth::check() ? view('user.welcome') : view('auth.login'); });
 //Route::get('sample', function(){ return view('welcome'); });
 Route::get('phpmyadmin', function(){ return Redirect::to('http://larachat.phpmyadmin'); });
-
-//Route::controller('hello', 'PagesController');
-//Route::get('hello', 'PagesController@index');
 
 // login
 Route::get( 'auth/login', function(){ return view('auth.login'); });
@@ -41,7 +32,14 @@ Route::get('auth/password/email',         'Auth\PasswordController@getEmail');
 Route::post('auth/password/email',        'Auth\PasswordController@postEmail');
 Route::get('auth/password/reset/{token}', 'Auth\PasswordController@getReset');
 Route::post('auth/password/reset',        'Auth\PasswordController@postReset');
-Route::get('/home', function(){ return view('user.welcome'); });
+/**
+ * ログイン後のユーザー用ルート：未ログインユーザーはログイン画面へ
+ * tosite
+ * 2017/05/16
+ */
+Route::group(['middleware' => ['auth']], function(){
+    Route::get('/home', function(){ return view('user.welcome'); });
+});
 //Route::get('password/reset',         function(){ return view('auth.password'); });
 
 //Route::get('email', function(){
@@ -54,6 +52,7 @@ Route::get('/home', function(){ return view('user.welcome'); });
 //Route::post('auth/register', function(){echo 'post';});
 //chat
 Route::get('chat', function() {
-    return view('chat');
+    return view('user.chat.chat');
 });
 Route::any('tweetsend', 'TweetController@addTweet');
+//Route::any('tweetsend', function(){echo 'aaa';});
