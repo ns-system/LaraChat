@@ -1,4 +1,4 @@
 パスワードが分からなくなりましたか？
 
 以下のリンクをクリックしてパスワードをリセットしてください。
-{{ url('password/reset/'.$token) }}
+{{ url('auth/password/reset/'.$token) }}

@@ -1,39 +1,52 @@
 @extends('layouts.master')
 @section('title', 'ユーザー登録')
+
+<!--@section('head')
+@parent
+@endsection-->
+
 @section('content')
 
-<div class="container">
-    <div class="content panel panel-default">
-        <div class="panel-heading"><h3>register</h3></div>
-        <form method="post" action="register" class="panel-body">
-            {!! csrf_field() !!}
-            @if ($errors->has('name')) <div class="form-group has-error"> @else <div class="form-group"> @endif
-                <label class="control-label" for="name">ユーザー名</label>
+<div class="content panel panel-primary">
+    <div class="panel-heading"><h5><b class="glyphicon glyphicon-user"></b> Register</h5></div>
+    <form class="form-horizontal panel-body" role="form" method="post" action="/auth/register">
+        {!! csrf_field() !!}
+        <div class="form-group">
+            <label class="control-label col-md-3 col-md-offset-1" for="name">ユーザー名</label>
+            <div class="col-md-7">
                 <input type="text" class="form-control" name="name" value="{{ old('name') }}">
-                @if ($errors->has('name')) <span class="help-block">{{ $errors->first('name') }}</span> @endif
             </div>
-            @if ($errors->has('email')) <div class="form-group has-error"> @else <div class="form-group"> @endif
-                <label class="control-label" for="email">メールアドレス</label>
-                <input type="text" class="form-control" name="email" value="{{ old('email') }}">
-                @if ($errors->has('email')) <span class="help-block">{{ $errors->first('email') }}</span> @endif
-            </div>
+        </div>
 
-            @if ($errors->has('password')) <div class="form-group has-error"> @else <div class="form-group"> @endif
-                <label class="control-label" for="password">パスワード</label>
+        <div class="form-group">
+            <label class="control-label col-md-3 col-md-offset-1" for="email">メールアドレス</label>
+            <div class="col-md-7">
+                <input type="email" class="form-control" name="email" value="{{ old('email') }}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-3 col-md-offset-1" for="password">パスワード</label>
+            <div class="col-md-7">
                 <input type="password" class="form-control" name="password" value="{{ old('password') }}">
-                @if ($errors->has('password')) <span class="help-block">{{ $errors->first('password') }}</span> @endif
             </div>
+        </div>
 
-            @if ($errors->has('password_confirmation')) <div class="form-group has-error"> @else <div class="form-group"> @endif
-                <label class="control-label" for="password_confirmation">パスワード再入力</label>
+        <div class="form-group">
+            <label class="control-label col-md-3 col-md-offset-1" for="password_confirmation">パスワード確認</label>
+            <div class="col-md-7">
                 <input type="password" class="form-control" name="password_confirmation" value="{{ old('password_confirmation') }}">
-                @if ($errors->has('password_confirmation')) <span class="help-block">{{ $errors->first('password_confirmation') }}</span> @endif
             </div>
-            <div>
-                <button type="submit" class="btn btn-primary btn-block">登録</button>
-            </div>
-        </form>
-    </div>
-        <a href="/" class="btn btn-success">Back</a>
+        </div>
+
+        <div class="col-md-offset-4 col-md-7">
+            <button type="submit" class="btn btn-warning btn-block btn-lg">登録</button>
+        </div>
+    </form>
 </div>
+@include('auth.partial.info')
 @endsection
+
+<!--@section('js')
+    @parent
+@endsection-->

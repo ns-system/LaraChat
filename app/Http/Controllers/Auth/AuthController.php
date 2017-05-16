@@ -135,7 +135,7 @@ class AuthController extends Controller
  
         \Session::flash('flash_message', 'ユーザー登録確認メールを送りました。');
 
-        return redirect('confirm');
+        return redirect('auth.confirm');
     }
  
     /**
@@ -148,13 +148,13 @@ class AuthController extends Controller
         $user = User::where('confirmation_token', '=', $token)->first();
         if (! $user) {
             \Session::flash('flash_message', '無効なトークンです。');
-            return redirect('login');
+            return redirect('auth.login');
         }
  
         $user->confirm();
         $user->save();
  
         \Session::flash('flash_message', 'ユーザー登録が完了しました。ログインしてください。');
-        return redirect('login');
+        return redirect('auth.login');
     }
 }

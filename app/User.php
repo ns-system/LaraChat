@@ -72,5 +72,5 @@ class User extends Model implements AuthenticatableContract,
     public function tweets_participant() {
         return $this->hasMany('App\Tweet');
     }
-
+    
 }

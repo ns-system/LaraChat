@@ -1,13 +1,5 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>@yield('title')</title>
-        <link rel="stylesheet" href="https://nkmr6194.github.io/Umi/css/bootstrap.css">
-    </head>
-    <body>
-        {{-- side var --}}
-        <div class="">
-            @yield('content')
-        </div>
-    </body>
-</html>
+<footer class="footer" style="height: auto;">
+    <div class="container-fluid bg-primary">
+        <p class="text-muted">Place sticky footer content here.</p>
+    </div>
+</footer>

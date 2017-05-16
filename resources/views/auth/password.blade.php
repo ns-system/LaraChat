@@ -1,47 +1,36 @@
 @extends('layouts.master')
-@section('title', 'パスワードリセット')
+@section('title', 'ユーザー登録')
+
+<!--@section('head')
+@parent
+@endsection-->
+
 @section('content')
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-md-8 col-md-offset-2">
-      <div class="panel panel-default">
-        <div class="panel-heading">パスワードリセット</div>
-        <div class="panel-body">
-          @if (session('status'))
-            <div class="alert alert-success">
-              {{ session('status') }}
+
+<div class="content panel panel-primary">
+    <div class="panel-heading"><h5><b class="glyphicon glyphicon-log-in"></b> Password Reset</h5></div>
+    <form class="form-horizontal panel-body" role="form" method="post" action="/auth/password/email">
+        {!! csrf_field() !!}
+
+        <div class="form-group">
+            <label class="col-md-3 col-md-offset-1 control-label">メールアドレス</label>
+            <div class="col-md-7">
+                <input type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="Enter your email.">
             </div>
-          @endif
- 
-          @if (count($errors) > 0)
-            <div class="alert alert-danger">
-              <ul>
-                @foreach ($errors->all() as $error)
-                  <li>{{ $error }}</li>
-                @endforeach
-              </ul>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-7 col-md-offset-4">
+                <button type="submit" class="btn btn-success btn-lg btn-block"><b class="glyphicon glyphicon-envelope"></b> メールを送る</button>
             </div>
-          @endif
- 
-          <form class="form-horizontal" role="form" method="POST" action="/password/email">
-            <input type="hidden" name="_token" value="{{ csrf_token() }}">
- 
-            <div class="form-group">
-              <label class="col-md-4 control-label">メールアドレス</label>
-              <div class="col-md-6">
-                <input type="email" class="form-control" name="email" value="{{ old('email') }}">
-              </div>
-            </div>
- 
-            <div class="form-group">
-              <div class="col-md-6 col-md-offset-4">
-                <button type="submit" class="btn btn-primary">メールを送る</button>
-              </div>
-            </div>
-          </form>
-        </div><!-- .panel-body -->
-      </div><!-- .panel -->
-    </div><!-- .col -->
-  </div><!-- .row -->
-</div><!-- .container-fluid -->
+        </div>
+    </form>
+</div>
+
+@include('auth.partial.info')
+
 @endsection
+
+<!--@section('js')
+    @parent
+@endsection-->

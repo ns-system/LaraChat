@@ -1,36 +1,40 @@
 @extends('layouts.master')
-@section('title', 'パスワードリセット')
+@section('title', 'ログイン')
+
+<!--@section('head')
+@parent
+@endsection-->
+
 @section('content')
-    <div class="container">
-    {{-- フラッシュメッセージの表示 --}}
-        @if (Session::has('flash_message'))
-        <div class="alert alert-success">
-            {{ Session::get('flash_message') }}
-        </div>
-        @endif
-        <div class="content panel panel-default">
-            <div class="panel-heading"><h3>Login</h3></div>
-            <form method="post" action="login" class="panel-body">
-                {!! csrf_field() !!}
-                @if ($errors->has('email')) <div class="form-group has-error"> @else <div class="form-group"> @endif
-                    <label class="control-label" for="email">メールアドレス</label>
-                    <input type="text" class="form-control" name="email" value="{{ old('email') }}">
-                    @if ($errors->has('email')) <span class="help-block">{{ $errors->first('email') }}</span> @endif
-                </div>
+<div class="content panel panel-primary">
+    <div class="panel-heading"><h5><b class="glyphicon glyphicon-log-in"></b> Login</h5></div>
+    <form class="form-horizontal panel-body" role="form" method="post" action="/auth/login">
+        {!! csrf_field() !!}
 
-                @if ($errors->has('password'))
-                <div class="form-group has-error"> @else <div class="form-group"> @endif
-                    <label class="control-label" for="password">パスワード</label>
-                    <input type="password" class="form-control" name="password" value="{{ old('password') }}">
-                    @if ($errors->has('password')) <span class="help-block">{{ $errors->first('password') }}</span> @endif
-                </div>
-
-                <div>
-                    <button type="submit" class="btn btn-primary btn-block">Login</button>
-                </div>
-                <div><a href="password/email">Forgot your password?</a></div>
-            </form>
+        <div class="form-group">
+            <label class="control-label col-md-3 col-md-offset-1" for="email">メールアドレス</label>
+            <div class="col-md-7">
+                <input type="text" class="form-control" name="email" value="{{ old('email') }}" placeholder="Enter your e-mail.">
+            </div>
         </div>
-            <a href="/" class="btn btn-success">Back</a>
-    </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-3 col-md-offset-1" for="password">パスワード</label>
+            <div class="col-md-7">
+                <input type="password" class="form-control" name="password" value="{{ old('password') }}" placeholder="Enter your password.">
+            </div>
+        </div>
+
+        <div class="col-md-offset-4 col-md-7">
+            <button type="submit" class="btn btn-success btn-block btn-lg">ログイン</button>
+            <a href="auth/password/email"><b class="glyphicon glyphicon-question-sign"></b>パスワードを忘れましたか？</a>
+        </div>
+    </form>
+</div>
+@include('auth.partial.info')
+
 @endsection
+
+<!--@section('js')
+    @parent
+@endsection-->

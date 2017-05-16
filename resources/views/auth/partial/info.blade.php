@@ -1,10 +1,10 @@
-@extends('layouts.master')
-@section('title', 'Confirm')
-@section('content')
-    {{-- フラッシュメッセージの表示 --}}
-    <div class="alert alert-success">
-        <p>メールを送信しました。</p>
-        <p>登録されているメールアドレスを確認してください。</p>
-    </div>
-    <a href="/" class="btn btn-success">Back</a>
-@endsection
+@if (count($errors) > 0)
+<div class="alert alert-dismissible alert-danger">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <ul>
+        @foreach ($errors->all() as $error)
+        <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
+@endif

@@ -1,59 +1,50 @@
 @extends('layouts.master')
-@section('title', 'Confirm')
-@section('content')
+@section('title', 'ログイン')
 
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-md-8 col-md-offset-2">
-      <div class="panel panel-default">
-        <div class="panel-heading">パスワードをリセット</div>
-        <div class="panel-body">
-          @if (count($errors) > 0)
-            <div class="alert alert-danger">
-              <ul>
-                @foreach ($errors->all() as $error)
-                  <li>{{ $error }}</li>
-                @endforeach
-              </ul>
-            </div>
-          @endif
- 
-          <form class="form-horizontal" role="form" method="POST" action="/password/reset">
-            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-            <input type="hidden" name="token" value="{{ $token }}">
- 
-            <div class="form-group">
-              <label class="col-md-4 control-label">メールアドレス</label>
-              <div class="col-md-6">
+<!--@section('head')
+@parent
+@endsection-->
+
+@section('content')
+<div class="content panel panel-primary">
+    <div class="panel-heading"><h5><b class="glyphicon glyphicon-log-in"></b> Password Reset</h5></div>
+    <form class="form-horizontal panel-body" role="form" method="post" action="/auth/password/reset">
+
+        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+        <input type="hidden" name="token" value="{{ $token }}">
+
+        <div class="form-group">
+            <label class="control-label col-md-3 col-md-offset-1" for="email">メールアドレス</label>
+            <div class="col-md-7">
                 <input type="email" class="form-control" name="email" value="{{ old('email') }}">
-              </div>
             </div>
- 
-            <div class="form-group">
-              <label class="col-md-4 control-label">パスワード</label>
-              <div class="col-md-6">
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-3 col-md-offset-1" for="email">パスワード</label>
+            <div class="col-md-7">
                 <input type="password" class="form-control" name="password">
-              </div>
             </div>
- 
-            <div class="form-group">
-              <label class="col-md-4 control-label">パスワード（確認）</label>
-              <div class="col-md-6">
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-3 col-md-offset-1" for="email">パスワード確認</label>
+            <div class="col-md-7">
                 <input type="password" class="form-control" name="password_confirmation">
-              </div>
             </div>
- 
-            <div class="form-group">
-              <div class="col-md-6 col-md-offset-4">
-                <button type="submit" class="btn btn-primary">
-                  パスワードをリセットする
-                </button>
-              </div>
-            </div>
-          </form>
-        </div><!-- panel-body -->
-      </div><!-- .panel -->
-    </div><!-- .col -->
-  </div><!-- .row -->
-</div><!-- .container-fluid -->
+        </div>
+
+        <div class="col-md-offset-4 col-md-7">
+            <button type="submit" class="btn btn-lg btn-block btn-danger">
+                <b></b>
+                パスワードリセット</button>
+        </div>
+
+    </form>
+</div>
+@include('auth.partial.info')
 @endsection
+
+<!--@section('js')
+    @parent
+@endsection-->

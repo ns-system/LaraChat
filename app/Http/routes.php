@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 //Route::get('sample', function(){ return view('welcome'); });
 Route::get('phpmyadmin', function(){ return Redirect::to('http://larachat.phpmyadmin'); });
@@ -21,21 +21,23 @@ Route::get('phpmyadmin', function(){ return Redirect::to('http://larachat.phpmya
 //Route::get('hello', 'PagesController@index');
 
 // login
-Route::get( 'login', function(){ return view('auth.login'); });
-Route::post('login', 'Auth\AuthController@postLogin');
+Route::get( 'auth/login', function(){ return view('auth.login'); });
+Route::post('auth/login', 'Auth\AuthController@postLogin');
+//Route::post('login', function(){echo 'safdfsa';});
 Route::get('logout', 'Auth\AuthController@getLogout');
 
 // register
-Route::get( 'confirm',                 function(){ return view('auth.confirm'); });
-Route::get( 'register',                'Auth\AuthController@getRegister');
-Route::post('register',                'Auth\AuthController@postRegister');
-Route::get('register/confirm/{token}', 'Auth\AuthController@getConfirm');
+Route::get( 'auth/confirm',                 function(){ return view('auth.confirm'); });
+Route::get( 'auth/register',                'Auth\AuthController@getRegister');
+Route::post('auth/register',                'Auth\AuthController@postRegister');
+Route::get('auth/register/confirm/{token}', 'Auth\AuthController@getConfirm');
 
 // reset password
-Route::get('password/email',         'Auth\PasswordController@getEmail');
-Route::post('password/email',        'Auth\PasswordController@postEmail');
-Route::get('password/reset/{token}', 'Auth\PasswordController@getReset');
-Route::post('password/reset',        'Auth\PasswordController@postReset');
+Route::get('auth/password/email',         'Auth\PasswordController@getEmail');
+Route::post('auth/password/email',        'Auth\PasswordController@postEmail');
+Route::get('auth/password/reset/{token}', 'Auth\PasswordController@getReset');
+Route::post('auth/password/reset',        'Auth\PasswordController@postReset');
+Route::get('/home', function(){ return view('user.welcome'); });
 //Route::get('password/reset',         function(){ return view('auth.password'); });
 
 //Route::get('email', function(){
