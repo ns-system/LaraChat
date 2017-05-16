@@ -12,7 +12,11 @@
 */
 
 Route::get('/', function () {
-    return view('auth.login');
+    if(Auth::check()) {
+        return view('user.welcome');
+    } else {
+        return view('auth.login');
+    }
 });
 //Route::get('sample', function(){ return view('welcome'); });
 Route::get('phpmyadmin', function(){ return Redirect::to('http://larachat.phpmyadmin'); });
