@@ -2,3 +2,4 @@
 nbproject
 phpmyadmin
 .gitignore
+.env
