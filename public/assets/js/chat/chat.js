@@ -19,7 +19,8 @@ $(function ()
             data:{
                 "tweet":    $('#tweet').val(), //投稿
                 "userId":   $('#userId').val(), //ユーザーID
-                "threadId": $('#threadId').val() //板ID
+                "userName": $('#userName').val(), //ユーザーID
+                "threadId": $('#threadId').val(), //板ID
             },
             success: function (hoge) //通信成功、dataaddcon.phpからの返り値を受け取る
             {
@@ -32,6 +33,7 @@ $(function ()
                 }
 //                $('#test').html(hoge);
                 console.log("END:SUCCESS");
+                $('#tweet').val('');
                 setPost(hoge);
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) //通信失敗

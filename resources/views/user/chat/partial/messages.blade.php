@@ -5,25 +5,29 @@ $user = Auth::user();
 ?>
 
 <div class="message-area row container-fluid">
-@foreach($tweets as $tweet)
-@if($tweet->user_id === $user->id)
-<p class="text-right"><span class="label label-primary">{{$tweet->User->name}}さん</span></p>
-<div class="panel panel-default col-lg-8 col-lg-offset-4" style="margin-bottom: 5px; padding: 0;">
-    <div class="panel-body text-right alert-success" style="padding: 5px 10px">
-        <p>{{$tweet->comment}}</p>
-        <small class="text-muted">{{date('Y/n/j H:i:s', strtotime($tweet->created_at))}}</small>
+    @foreach($tweets as $tweet)
+    @if($tweet->user_id === $user->id)
+    <div class=" col-lg-10 col-lg-offset-2">
+        <p class="text-right"><span class="label label-primary">{{$tweet->User->name or '名無し'}}さん</span></p>
+        <div class="panel panel-default" style="margin-bottom: 5px; padding: 0;">
+            <div class="panel-body text-right alert-success" style="padding: 5px 10px">
+                <p>{{$tweet->comment}}</p>
+                <small class="text-muted">{{date('Y/n/j H:i:s', strtotime($tweet->created_at))}}</small>
+            </div>
+        </div>
     </div>
-</div>
-@else
-<p class="text-left"><span class="label label-default">{{$tweet->User->name}}さん</span></p>
-<div class="panel panel-default col-lg-8" style="margin-bottom: 5px; padding: 0;">
-    <div class="panel-body text-left" style="padding: 5px 10px">
-        <p>{{$tweet->comment}}</p>
-        <small class="text-muted">{{date('Y/n/j H:i:s', strtotime($tweet->created_at))}}</small>
+    @else
+    <div class=" col-lg-10">
+        <p class="text-left"><span class="label label-default">{{$tweet->User->name or '名無し'}}さん</span></p>
+        <div class="panel panel-default" style="margin-bottom: 5px; padding: 0;">
+            <div class="panel-body text-left" style="padding: 5px 10px">
+                <p>{{$tweet->comment}}</p>
+                <small class="text-muted">{{date('Y/n/j H:i:s', strtotime($tweet->created_at))}}</small>
+            </div>
+        </div>
     </div>
-</div>
-@endif
-@endforeach
+    @endif
+    @endforeach
 </div>
 <!--<div class="media">
     <a class="media-left" href="#">

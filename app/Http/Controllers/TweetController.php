@@ -106,18 +106,19 @@ class TweetController extends Controller {
 //            $labelColor = 'label-default';
 //            if($userId === Auth::user()->id){
                 $align = 'text-right';
-                $size  = 'col-lg-offset-4';
+                $size  = 'col-lg-offset-2';
                 $panelColor = 'alert-success';
                 $labelColor = 'label-primary';
 //            }
-            $buf = "<p class=\"{$align}\"><span class=\"label {$labelColor}\">{$name}さん</span></p>".
-                   "<div class=\"panel panel-default col-lg-8 {$size}\" style=\"margin-bottom: 5px; padding: 0;\">".
-                   "    <div class=\"panel-body {$align} {$panelColor}\" style=\"padding: 5px 10px\">".
-                   "        <p>".e($comment)."</p>".
-                   "        <small class=\"text-muted\">".date('Y/n/j H:i:s')."</small>".
+            $buf = "<div class=\" col-lg-10 {$size}\">".
+                   "    <p class=\"{$align}\"><span class=\"label {$labelColor}\">{$name}さん</span></p>".
+                   "    <div class=\"panel panel-default\" style=\"margin-bottom: 5px; padding: 0;\">".
+                   "        <div class=\"panel-body {$align} {$panelColor}\" style=\"padding: 5px 10px\">".
+                   "            <p>".e($comment)."</p>".
+                   "            <small class=\"text-muted\">".date('Y/n/j H:i:s')."</small>".
+                   "        </div>".
                    "    </div>".
                    "</div>";
-                    
 //            }else{
 //                $buf = '<div class="text-left">'.
 //                       '<p class="text-left">other:'.$comment.'</p>'.
