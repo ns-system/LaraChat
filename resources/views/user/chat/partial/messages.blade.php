@@ -1,22 +1,28 @@
 <?php
-$tweets = App\Tweet::All();
+$tweets = App\Tweet::orderBy('updated_at', 'desc')->take(10)->get();
 $user = Auth::user();
 //    var_dump($tweets);
 ?>
 
-<div class="message-area">
+<div class="message-area row container-fluid">
 @foreach($tweets as $tweet)
-<!--<div class="row row-flex">-->
 @if($tweet->user_id === $user->id)
-<div class="text-right">
-    <p class="text-right">{{$tweet->comment}}:me</p>
+<p class="text-right"><span class="label label-primary">{{$tweet->User->name}}さん</span></p>
+<div class="panel panel-default col-lg-8 col-lg-offset-4" style="margin-bottom: 5px; padding: 0;">
+    <div class="panel-body text-right alert-success" style="padding: 5px 10px">
+        <p>{{$tweet->comment}}</p>
+        <small class="text-muted">{{date('Y/n/j H:i:s', strtotime($tweet->created_at))}}</small>
+    </div>
 </div>
 @else
-<div class="text-left">
-    <p class="text-left">other:{{$tweet->comment}}</p>
+<p class="text-left"><span class="label label-default">{{$tweet->User->name}}さん</span></p>
+<div class="panel panel-default col-lg-8" style="margin-bottom: 5px; padding: 0;">
+    <div class="panel-body text-left" style="padding: 5px 10px">
+        <p>{{$tweet->comment}}</p>
+        <small class="text-muted">{{date('Y/n/j H:i:s', strtotime($tweet->created_at))}}</small>
+    </div>
 </div>
 @endif
-<!--</div>-->
 @endforeach
 </div>
 <!--<div class="media">

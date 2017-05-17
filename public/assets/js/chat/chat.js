@@ -52,5 +52,5 @@ function setPost(message){
 //    var content = '<div class="text-left">'+
 //                  '    <p class="text-left">'+message+'</p>'+
 //                  '</div>';
-    $('.message-area').append(message);
+    $('.message-area').prepend(message);
 }

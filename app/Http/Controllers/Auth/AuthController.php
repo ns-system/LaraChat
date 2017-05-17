@@ -135,7 +135,7 @@ class AuthController extends Controller
  
         \Session::flash('flash_message', 'ユーザー登録確認メールを送りました。');
 
-        return redirect('auth.confirm');
+        return redirect('auth/confirm');
     }
  
     /**

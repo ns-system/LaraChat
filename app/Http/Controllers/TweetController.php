@@ -10,7 +10,7 @@ use Input; // Input::get()を使用するために追加
 use DB; //DB操作のため
 
 use App\Tweet; // モデル定義されてなくて引っかかった
-//use User;
+use App\User;
 class TweetController extends Controller {
 
     /**
@@ -87,6 +87,7 @@ class TweetController extends Controller {
             $tweet = new Tweet;
             $comment           = Input::get('tweet');
             $userId            = Input::get('userId');
+            $name              = Input::get('userName');
 //            $threadId          = Input::get('threadId');
             $tweet->comment    = e($comment);
             $tweet->user_id    = e($userId);
@@ -96,11 +97,27 @@ class TweetController extends Controller {
             $tweet->save();
 //            $amarg = $comment . "user" . $userId . "すれ" . $threadId;
 
+//            $name = User::where('id', $userId)->get();
+//            $name = User::where('id', $userId)->get();
+//            var_dump($name);
+//            $align = 'text-left';
+//            $size  = '';
+//            $panelColor = '';
+//            $labelColor = 'label-default';
 //            if($userId === Auth::user()->id){
-                $buf = '<div class="text-right">'.
-                       '<p class="text-right">me:'.$comment.'</p>'.
-                       '</div>';
-                
+                $align = 'text-right';
+                $size  = 'col-lg-offset-4';
+                $panelColor = 'alert-success';
+                $labelColor = 'label-primary';
+//            }
+            $buf = "<p class=\"{$align}\"><span class=\"label {$labelColor}\">{$name}さん</span></p>".
+                   "<div class=\"panel panel-default col-lg-8 {$size}\" style=\"margin-bottom: 5px; padding: 0;\">".
+                   "    <div class=\"panel-body {$align} {$panelColor}\" style=\"padding: 5px 10px\">".
+                   "        <p>".e($comment)."</p>".
+                   "        <small class=\"text-muted\">".date('Y/n/j H:i:s')."</small>".
+                   "    </div>".
+                   "</div>";
+                    
 //            }else{
 //                $buf = '<div class="text-left">'.
 //                       '<p class="text-left">other:'.$comment.'</p>'.
