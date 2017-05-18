@@ -46,10 +46,18 @@ return [
 
     'connections' => [
 
-        'sqlite' => [
+//        'sqlite' => [
+//            'driver'   => 'sqlite',
+//            'database' => database_path('database.sqlite'),
+//            'prefix'   => '',
+//        ],
+        'testing' => [
             'driver'   => 'sqlite',
-            'database' => database_path('database.sqlite'),
+            'database' => ':memory:',
             'prefix'   => '',
+            'options'  => [
+                PDO::ATTR_PERSISTENT => true,
+            ]
         ],
 
         'mysql' => [
