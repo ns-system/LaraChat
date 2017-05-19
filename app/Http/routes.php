@@ -55,4 +55,5 @@ Route::get('chat', function() {
     return view('user.chat.chat');
 });
 Route::any('tweetsend', 'TweetController@addTweet');
-//Route::any('tweetsend', function(){echo 'aaa';});
+Route::any('tweetupdate', 'TweetController@receiveTweet');
+

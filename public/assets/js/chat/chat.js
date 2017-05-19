@@ -18,7 +18,7 @@ $(function ()
             // },
             data:{
                 "tweet":    $('#tweet').val(), //投稿
-                "userId":   $('#userId').val(), //ユーザーID
+                "userId":  $('#userId').val() , //ユーザーID
                 "userName": $('#userName').val(), //ユーザーID
                 "threadId": $('#threadId').val(), //板ID
             },
@@ -48,6 +48,50 @@ $(function ()
         });
         return false; //ページが更新されるのを防ぐ
     });
+    $(window).load(function(){
+      checkupdate();
+      
+      
+    });
+    function checkupdate(){
+                $.ajax({
+            type: "POST", //POSTで渡す
+            url: "/tweetupdate", //POST先
+            // beforeSend: function (xhr) {
+            //     return xhr.setRequestHeader('X-CSRF-TOKEN', "{{csrf_token()}}");
+            // },
+            data:{
+                
+                "userId":  $('#userId').val() , //ユーザーID
+                
+            },
+            success: function (hoge) //通信成功、dataaddcon.phpからの返り値を受け取る
+            {
+                if (hoge === 0) //返り値が0→生存確認
+                {
+                    checkupdate();
+                } else if (hoge === 1){ //返り値が1→失敗
+//                } else {
+                    alert('他のユーザーのコメント取得時にエラーが起きました');
+                }
+                console.log("END:SUCCESS");
+                 // todo 複数回回そう 
+                //setPost(hoge);
+                console.log(hoge);
+                checkupdate();
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) //通信失敗
+            {
+                console.log(
+                        XMLHttpRequest,
+                        textStatus,
+                        errorThrown
+                );
+                alert('処理できませんでした、ページを更新して下さい');
+            }
+    });
+}
+    
 });
 
 function setPost(message){
