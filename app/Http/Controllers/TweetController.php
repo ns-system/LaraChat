@@ -88,56 +88,61 @@ class TweetController extends Controller {
             $comment = Input::get('tweet');
             $userId = Input::get('userId');
             $name = Input::get('userName');
-//            $threadId          = Input::get('threadId');
             $tweet->comment = e($comment);
             $tweet->user_id = e($userId);
-//            $tweet->thread_id  = e($threadId);
-//            $tweet->user_id = 10;
-//            $tweet->comment = "Your Nice!!";
+
             $tweet->save();
-//            $amarg = $comment . "user" . $userId . "すれ" . $threadId;
-//            $name = User::where('id', $userId)->get();
-//            $name = User::where('id', $userId)->get();
-//            var_dump($name);
-//            $align = 'text-left';
-//            $size  = '';
-//            $panelColor = '';
-//            $labelColor = 'label-default';
-//            if($userId === Auth::user()->id){
-            $align = 'text-right';
-            $size = 'col-lg-offset-2';
-            $panelColor = 'alert-success';
-            $labelColor = 'label-primary';
+
+            $val = [
+                'name'=>    $name,
+                'comment'=> $comment,
+                'time'=>    date('Y/n/j H:i:s'),
+            ];
+            $cls = [
+                'align' => 'text-right',
+                'offset' => 'col-lg-offset-2',
+                'panelColor' => 'alert-success',
+                'labelColor' => 'label-primary',
+            ];
+
+//            $align = 'text-right';
+//            $size = 'col-lg-offset-2';
+//            $panelColor = 'alert-success';
+//            $labelColor = 'label-primary';
 //            }
-            $buf = "<div class=\" col-lg-10 {$size}\">" .
-                    "    <p class=\"{$align}\"><span class=\"label {$labelColor}\">{$name}さん</span></p>" .
-                    "    <div class=\"panel panel-default\" style=\"margin-bottom: 5px; padding: 0;\">" .
-                    "        <div class=\"panel-body {$align} {$panelColor}\" style=\"padding: 5px 10px\">" .
-                    "            <p>" . e($comment) . "</p>" .
-                    "            <small class=\"text-muted\">" . date('Y/n/j H:i:s') . "</small>" .
-                    "        </div>" .
-                    "    </div>" .
-                    "</div>";
+            $buf = $this->returnHtmlTag($val, $cls);
+            $jsbufs = json_encode($buf);
+            return $jsbufs;
+//            $buf = "<div class=\" col-lg-10 {$size}\">" .
+//                    "    <p class=\"{$align}\"><span class=\"label {$labelColor}\">{$name}さん</span></p>" .
+//                    "    <div class=\"panel panel-default\" style=\"margin-bottom: 5px; padding: 0;\">" .
+//                    "        <div class=\"panel-body {$align} {$panelColor}\" style=\"padding: 5px 10px\">" .
+//                    "            <p>" . e($comment) . "</p>" .
+//                    "            <small class=\"text-muted\">" . date('Y/n/j H:i:s') . "</small>" .
+//                    "        </div>" .
+//                    "    </div>" .
+//                    "</div>";
 //            }else{
 //                $buf = '<div class="text-left">'.
 //                       '<p class="text-left">other:'.$comment.'</p>'.
 //                       '</div>';
 //            }
 //            $amarg = "success:{$userId}-{$comment}";
-            return $buf;
+//            return $buf;
         } catch (Exception $e) {
             return Response::make('1');
         }
     }
 
     public function receiveTweet() {
+        $bufs = [];
         try {
             $userId = Input::get('userId');
             $count = DB::table('tweets')->where('user_id', '!=', $userId)->count();
             $tmp = $count;
-            $i=0;
+            $i = 0;
             while ($tmp === $count) {
-                if($i==15){
+                if ($i == 15) {
                     return 0;
                 }
                 $count = DB::table('tweets')->where('user_id', '!=', $userId)->count();
@@ -145,34 +150,54 @@ class TweetController extends Controller {
                 $i++;
             }
             $tweetCountDifference = $count - $tmp;
-            $tweets = $count = DB::table('tweets')->where('user_id', '!=', $userId)->orderBy('created_at', 'desc')->take($tweetCountDifference)->get();
-            $bufs = array();
-            foreach ($tweets as $tweet) {
+            $tweets = Tweet::where('user_id', '!=', $userId)
+                    ->orderBy('created_at', 'desc')
+                    ->take($tweetCountDifference)
+                    ->get()
+            ;
+            $cls = [
+                'align' => 'text-right',
+                'offset' => '',
+                'panelColor' => 'alert-success',
+                'labelColor' => 'label-primary',
+            ];
 
-                $comment = $tweet->comment;
-                $time = $tweet->created_at;
-               $anotherUserId = $tweet->user_id;
-                $name = DB::table('user')->select('name')->where('user_id', $anotherUserId);
-                $align = 'text-right';
-                $size = 'col-lg-offset-2';
-                $panelColor = 'alert-success';
-                $labelColor = 'label-primary';
-                $buf = "<div class=\" col-lg-10 {$size}\">" .
-                        "    <p class=\"{$align}\"><span class=\"label {$labelColor}\">{$name}さん</span></p>" .
-                        "    <div class=\"panel panel-default\" style=\"margin-bottom: 5px; padding: 0;\">" .
-                        "        <div class=\"panel-body {$align} {$panelColor}\" style=\"padding: 5px 10px\">" .
-                        "            <p>" . e($comment) . "</p>" .
-                        "            <small class=\"text-muted\">" . date('Y/n/j H:i:s', strtotime($time)) . "</small>" .
-                        "        </div>" .
-                        "    </div>" .
-                        "</div>";
-                     $bufs[]=$buf;  
+            foreach ($tweets as $tweet) {
+                $val = [
+                    'name'=>    e($this->returnName($tweet)),
+                    'comment'=> e($tweet->comment),
+                    'time'=>    date('Y/n/j H:i:s', strtotime($tweet->create_at)),
+                ];
+                $bufs[] = $this->returnHtmlTag($val, $cls);
             }
-            $jsbufs = json_encode($buf);
+            $jsbufs = json_encode($bufs);
             return $jsbufs;
         } catch (Exception $ex) {
             return 1;
         }
+    }
+
+    private function returnName($tweet) {
+        try {
+            $name = $tweet->user->name;
+        } catch (Exception $ex) {
+            $name = '名無し';
+        }
+        return $name;
+    }
+
+    private function returnHtmlTag($val, $cls) {
+        $buf = "<div class=\" col-lg-10 {$cls['offset']}\">" .
+                "    <p class=\"{$cls['align']}\"><span class=\"label {$cls['labelColor']}\">{$val['name']}さん</span></p>" .
+                "    <div class=\"panel panel-default\" style=\"margin-bottom: 5px; padding: 0;\">" .
+                "        <div class=\"panel-body {$cls['align']} {$cls['panelColor']}\" style=\"padding: 5px 10px\">" .
+                "            <p>{$val['comment']}</p>" .
+                "            <small class=\"text-muted\">{$val['time']}</small>" .
+                "        </div>" .
+                "    </div>" .
+                "</div>"
+        ;
+        return $buf;
     }
 
 }
