@@ -7,11 +7,11 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\User;
 class sample extends TestCase
 {
-    public function setUp()
-    {
-        parent::setUp();
-        $this->users = new \App\Repositories\Eloquent\Users();
-    }
+//    public function setUp()
+//    {
+//        parent::setUp();
+//        $this->users = new \App\Repositories\Eloquent\Users();
+//    }
     /**
      * @before
      */
@@ -29,12 +29,20 @@ class sample extends TestCase
             ->type('test123','password_confirmation')
             ->press('登録')
             ->seePageIs('/auth/confirm')
-            ->see('メール')
+            ->see('メールを送信しました')
         ;
         $token = User::first();
         $this->visit('/auth/register/confirm/'.$token->confirmation_token);
         $this->seePageIs('/')
             ->see('ユーザー登録が完了しました')
+        ;
+    }
+    public function testユーザー登録_トークン無効(){
+//        $sample = User::All();
+//        var_dump(User::All());
+        $this->visit('/auth/register/confirm/'.'failedtoken');
+        $this->seePageIs('/')
+            ->see('無効なトークンです')
         ;
     }
     public function testログイン成功()
@@ -79,5 +87,12 @@ class sample extends TestCase
             ->see('emailを正しいメールアドレスにしてください')
         ;
 //        var_dump(User::All());
+    }
+    public function testログイン後ホーム(){
+        $user = User::first();
+        $this->actingAs($user)
+            ->visit('/')
+            ->see('What')
+        ;
     }
 }

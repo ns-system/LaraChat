@@ -1,6 +1,9 @@
 <?php
-
-class TestCase extends Illuminate\Foundation\Testing\TestCase
+//class TestCase extends Illuminate\Foundation\Testing\TestCase
+/**
+ * abstractをつけないとNO TESTS FOUND IN TESTCASEエラー発生
+ */
+abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
 {
     /**
      * The base URL to use while testing the application.
