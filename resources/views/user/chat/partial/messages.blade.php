@@ -12,6 +12,8 @@ $user = Auth::user();
         <div class="panel panel-default" style="margin-bottom: 5px; padding: 0;">
             <div class="panel-body text-right alert-success" style="padding: 5px 10px">
                 <p>{{$tweet->comment}}</p>
+                 <button type="button" onclick="tweetEdit({{$tweet->tweet_id}})" value="{{$tweet->tweet_id}}" class="btn-danger btn-xs">編集</button>
+                <button type="button" onclick="eraseTweet({{$tweet->tweet_id}})" value="{{$tweet->tweet_id}}" class="btn-danger btn-xs">削除</button>
                 <small class="text-muted">{{date('Y/n/j H:i:s', strtotime($tweet->created_at))}}</small>
             </div>
         </div>

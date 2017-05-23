@@ -40,9 +40,7 @@ $(function ()
                     {
                         type: "POST", //POSTで渡す
                         url: "/tweetsend", //POST先
-                        beforeSend: function (xhr) {
-                            return xhr.setRequestHeader('X-CSRF-TOKEN', "{{csrf_token()}}");
-                        },
+                        
                         data:
                                 {
                                     "tweet": $('#tweet').val(), //投稿

@@ -14,7 +14,7 @@ class Tweet extends Model {
     }
 
     public function thread() {
-        return $this->belongsTo('App\Thread', 'tweet_id', 'tweet_id');
+        return $this->belongsTo('App\Thread', 'thread_id', 'thread_id');
     }
 
 }

@@ -5,7 +5,7 @@
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li><a href="#">メニューＡ</a></li>
+                <li><a href="chat">メニューＡ</a></li>
                 <li><a href="#">メニューＢ</a></li>
                 <li><a href="#">メニューＣ</a></li>
             </ul>

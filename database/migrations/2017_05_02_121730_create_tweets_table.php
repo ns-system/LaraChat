@@ -3,11 +3,11 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePostTable extends Migration
+class CreateTweetsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
+     * ap
      * @return void
      */
     public function up()
@@ -15,6 +15,7 @@ class CreatePostTable extends Migration
          Schema::create('tweets', function(Blueprint $table){
             $table->increments('tweet_id');
             $table->integer('user_id');
+            $table->integer('thread_id');
             $table->string('comment');
             $table->timestamps();
         });
@@ -27,6 +28,6 @@ class CreatePostTable extends Migration
      */
     public function down()
     {
-        Schema::drop('post');
+        Schema::drop('tweets');
     }
 }
