@@ -140,7 +140,7 @@ class TweetController extends Controller {
             $tmp = $count;
             $i = 0;
             while ($tmp === $count) {
-                if ($i == 111) {
+                if ($i == 10) {
                     return 0;
                 }
                 $count = DB::table('tweets')->where('user_id', '!=', $userId)->where('thread_id', '=', $threadId)->count();
@@ -200,6 +200,20 @@ class TweetController extends Controller {
         $tweetId= Input::get('tweetId');
         try {
             DB::table('tweets')->where('tweet_id','=',$tweetId)->delete();
+            return view('user.chat.chat');
+        } catch (Exception $ex) {
+            return 1;
+        }
+    }
+    public function tweetEdit() {
+        $tweetId= Input::get('tweetId');
+        $editComment= Input::get('editComment');
+       
+        try {
+            $tweet = Tweet::where('tweet_id', $tweetId)->first();
+            $tweet->comment = $editComment;
+            $tweet->save();
+            $debug = $tweet->comment;
             return 0;
         } catch (Exception $ex) {
             return 1;

@@ -12,8 +12,13 @@ $user = Auth::user();
         <div class="panel panel-default" style="margin-bottom: 5px; padding: 0;">
             <div class="panel-body text-right alert-success" style="padding: 5px 10px">
                 <p>{{$tweet->comment}}</p>
-                 <button type="button" onclick="tweetEdit({{$tweet->tweet_id}})" value="{{$tweet->tweet_id}}" class="btn-danger btn-xs">編集</button>
-                <button type="button" onclick="eraseTweet({{$tweet->tweet_id}})" value="{{$tweet->tweet_id}}" class="btn-danger btn-xs">削除</button>
+                <button type="button" onclick="tweetEdit({{$tweet->tweet_id}},'{{$tweet->comment}}')" value="{{$tweet->tweet_id}}" class="btn-warning btn-xs">編集</button>
+                <form action="/tweetErase" method="post" onsubmit="return eraseTweet()">
+                    {{ csrf_field() }}
+                    <input type="hidden" name="tweetId" value="{{$tweet->tweet_id}}" >
+                    <button type="submit" class="btn-danger btn-xs">削除</button>
+                </form>
+
                 <small class="text-muted">{{date('Y/n/j H:i:s', strtotime($tweet->created_at))}}</small>
             </div>
         </div>

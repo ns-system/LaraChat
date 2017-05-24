@@ -122,26 +122,34 @@ function checkupdate() {
 //    }
 //    return(t);
 //}
-function eraseTweet(tweetId = 0) {
-    var token = $('meta[name="csrf-token"]').attr('content');
-    console.log(token);
-    $.ajaxSetup({headers: {'X-CSRF-TOKEN': token}});
-    if (window.confirm("この発言を削除しますか？"))
-    {
-        $.ajax({
+function eraseTweet() {
 
+    if (window.confirm("この発言を削除しますか？")) {
+        return true;
+    }
+    else{
+        return false; 
+    }
+}
+function tweetEdit(tweetId,comment) {
+    var editComment = window.prompt("変更しない時はキャンセルを押してください", comment);
+    if (editComment != null) {
+        $.ajax({
             type: "POST", //POSTで渡す
-            url: "/tweetErase", //POST先
+            url: "/tweetEdit", //POST先
             data: {
-                "tweetId": tweetId //投稿ID
+                "tweetId":tweetId, //ユーザーID
+                "editComment":editComment, //編集されたコメント
             },
             success: function (hoge) //通信成功、dataaddcon.phpからの返り値を受け取る
             {
-                if (hoge*1 === 0) {
-                    location.reload(true);
-                } else {
-                    alert('削除に失敗しました');
+                if(hoge*1===0){
+                    location.reload(true)
                 }
+               else{
+                   
+                   alert('更新に失敗しました');
+               }
 
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) //通信失敗
@@ -153,10 +161,10 @@ function eraseTweet(tweetId = 0) {
                         textStatus,
                         errorThrown
                         );
-                alert('通信に失敗しました');
+//            alert('処理できませんでした、ページを更新して下さい');
             }
-        }
-        );
+        });
+    }
 }
-}
+
 

@@ -57,4 +57,5 @@ Route::get('chat', function() {
 Route::any('tweetsend', 'TweetController@addTweet');
 Route::any('tweetupdate', 'TweetController@receiveTweet');
 Route::any('tweetErase', 'TweetController@tweetErase');
+Route::any('tweetEdit', 'TweetController@tweetEdit');
 
