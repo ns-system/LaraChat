@@ -12,13 +12,13 @@
 <!--<div class="list-group" style="margin-top: 40px;">
 </div>-->
 
-<div class="panel panel-info">
+<div class="panel panel-success">
     <div class="panel-heading title">Menu</div>
     <!--    <div class="panel-body">
             パネルの内容
         </div>-->
     <div class="list-group">
-        <a href="" class="list-group-item"><i class="glyphicon glyphicon-pencil"></i> submenu1</a>
+        <a href="/chat" class="list-group-item"><i class="glyphicon glyphicon-comment"></i> chat</a>
         <a href="" class="list-group-item"><i class="glyphicon glyphicon-pencil"></i> submenu1</a>
         <a href="" class="list-group-item"><i class="glyphicon glyphicon-pencil"></i> submenu1</a>
     </div>

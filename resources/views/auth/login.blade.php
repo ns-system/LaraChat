@@ -27,7 +27,7 @@
 
         <div class="col-md-offset-4 col-md-7">
             <button type="submit" class="btn btn-success btn-block btn-lg">ログイン</button>
-            <a href="auth/password/email"><b class="glyphicon glyphicon-question-sign"></b>パスワードを忘れましたか？</a>
+            <a href="/auth/password/email"><b class="glyphicon glyphicon-question-sign"></b>パスワードを忘れましたか？</a>
         </div>
     </form>
 </div>

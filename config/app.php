@@ -97,7 +97,7 @@ return [
     |
     */
 
-    'log' => env('APP_LOG', 'single'),
+    'log' => env('APP_LOG', 'daily'),
 
     /*
     |--------------------------------------------------------------------------
@@ -151,7 +151,12 @@ return [
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-
+        /**
+         * Custom
+         */
+        App\Providers\PaymentServiceProvider::class,
+        App\Providers\ChatServiceProvider::class,
+        
     ],
 
     /*
@@ -203,6 +208,12 @@ return [
          * debug-tools
          */
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
+        /**
+         * Custom
+         */
+        'Payment' => App\Facades\Payment::class,
+        'Chat'    => App\Facades\Chat::class,
+
     ],
 
 ];

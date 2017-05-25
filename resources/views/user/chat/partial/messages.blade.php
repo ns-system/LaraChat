@@ -1,5 +1,5 @@
 <?php
-$tweets = App\Tweet::orderBy('updated_at', 'desc')->take(10)->get();
+$tweets = App\Tweet::orderBy('tweet_id', 'desc')->take(10)->get();
 $user = Auth::user();
 //    var_dump($tweets);
 ?>
@@ -12,14 +12,21 @@ $user = Auth::user();
         <div class="panel panel-default" style="margin-bottom: 5px; padding: 0;">
             <div class="panel-body text-right alert-success" style="padding: 5px 10px">
                 <p>{{$tweet->comment}}</p>
-                <button type="button" onclick="tweetEdit({{$tweet->tweet_id}},'{{$tweet->comment}}')" value="{{$tweet->tweet_id}}" class="btn-warning btn-xs">編集</button>
-                <form action="/tweetErase" method="post" onsubmit="return eraseTweet()">
+                <small class="text-muted">{{date('Y/n/j H:i:s', strtotime($tweet->created_at))}}</small>
+
+                <form action="/chat/edit" method="post" style="display:inline-block;" class="edit">
                     {{ csrf_field() }}
-                    <input type="hidden" name="tweetId" value="{{$tweet->tweet_id}}" >
-                    <button type="submit" class="btn-danger btn-xs">削除</button>
+                    <input type="hidden" name="editComment" value="{{$tweet->comment}}">
+                    <input type="hidden" name="editId"      value="{{$tweet->tweet_id}}" >
+                    <button type="submit" value="{{$tweet->tweet_id}}" class="btn btn-xs btn-link"><span class="text-warning">編集</span></button>
                 </form>
 
-                <small class="text-muted">{{date('Y/n/j H:i:s', strtotime($tweet->created_at))}}</small>
+                <form action="/chat/erase" method="post" style="display:inline-block;">
+                    {{ csrf_field() }}
+                    <input type="hidden" name="eraseId" value="{{$tweet->tweet_id}}" >
+                    <button type="submit" name="erase" class="btn btn-xs btn-link" onclick="return confirm('削除しますか？');"><span class="text-danger">削除</span></button>
+                </form>
+
             </div>
         </div>
     </div>

@@ -3,15 +3,16 @@
 
 @section('head')
 @parent
-        <meta name="csrf-token" content="<?php echo csrf_token() ?>">
+<meta name="csrf-token" content="<?php echo csrf_token() ?>">
 @endsection
 
 @section('content')
+@include('auth.partial.info')
 @include('user.chat.partial.window')
 @include('user.chat.partial.messages')
 @endsection
 
 @section('js')
-    @parent
-        <script type="text/javascript" src="{{asset('assets/js/chat/chat.js')}}"></script>
-    @endsection
+@parent
+<script type="text/javascript" src="{{asset('assets/js/chat/chat.js')}}"></script>
+@endsection

@@ -5,8 +5,14 @@ $(function ()
     $.ajaxSetup({headers: {'X-CSRF-TOKEN': token}});
     checkupdate();
 
-    $('#post').click(function ()
+    $('.edit').submit(function(e){
+        e.preventDefault();
+        $prevComment = $(this).children('input[name=editComment]').val();
+        $comment = window.prompt("変更しない時はキャンセルを押してください");
+    });
+    $('#add').submit(function (e)
     {
+        e.preventDefault();
         if ($('#tweet').val() === '') //投稿欄空欄だったら
         {
             alert('何か入力してください！');
@@ -14,7 +20,7 @@ $(function ()
         }
         $.ajax({
             type: "POST", //POSTで渡す
-            url: "/tweetsend", //POST先
+            url: "/chat/add", //POST先
             // beforeSend: function (xhr) {
             //     return xhr.setRequestHeader('X-CSRF-TOKEN', "{{csrf_token()}}");
             // },
@@ -32,9 +38,23 @@ $(function ()
                 } else if (hoge === 1) { //返り値が1→失敗
                     alert('失敗しました');
                 }
-                console.log("END:SUCCESS" + hoge);
+                console.log("END:SUCCESS");
                 $('#tweet').val('');
-                setPost(hoge);
+                var tweets = JSON.parse(hoge);
+                console.log(tweets);
+                var name = tweets.name;
+                var time = tweets.time;
+                var comment = tweets.comment;
+                var message = "<div class=\" col-lg-10 \">" +
+                        "    <p class=\"\"><span class=\"label \">" + name + "さん</span></p>" +
+                        "    <div class=\"panel panel-default\" style=\"margin-bottom: 5px; padding: 0;\">" +
+                        "        <div class=\"panel-body  \" style=\"padding: 5px 10px\">" +
+                        "            <p>" + comment + "</p>" +
+                        "            <small class=\"text-muted\">" + time + "</small>" +
+                        "        </div>" +
+                        "    </div>" +
+                        "</div>";
+                setPost(message);
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) //通信失敗
             {
@@ -56,32 +76,33 @@ function setPost(message) {
 }
 
 function checkupdate() {
-//    var token = $('meta[name="csrf-token"]').attr('content');
-//    console.log(token);
-//    $.ajaxSetup({ headers:{'X-CSRF-TOKEN': token} });
-////    checkupdate(token);
     $.ajax({
         type: "POST", //POSTで渡す
-        url: "/tweetupdate", //POST先
+        url: "/chat/recieve", //POST先
         data: {
-            "userId": $('#userId').val(), //ユーザーID
-            "threadId": $('#threadId').val(), //板ID
+            "updateUserId": $('#updateUserId').val(), //ユーザーID
+            "updateThreadId": $('#updateThreadId').val(), //板ID
+            "updateCount": $('#updateCount').val() //板ID
         },
         success: function (hoge) //通信成功、dataaddcon.phpからの返り値を受け取る
         {
+            console.log('hoge=' + hoge);
             var align = 'text-left';
             var size = '';
             var labelColor = 'label-primary';
-            if (hoge * 1 === 0) //返り値が0→生存確認
-            {
-                checkupdate();
-            } else if (hoge * 1 === 1) { //返り値が1→失敗
-                alert('他のユーザーのコメント取得時にエラーが起きましたページを更新してください');
-            } else {
-                var tweets = JSON.parse(hoge);
-
-
-                for (i = tweets.length - 1; i >= 0; i--) {
+            if (hoge * 1 === -1) {
+                alert('他のユーザーのコメント取得時にエラーが起きました。ページを更新してください。');
+                return;
+            }
+//            if (hoge * 1 >= 0) {
+//                console.log('hoge >= 0');
+//                checkupdate();
+//            }
+            if (isJson(hoge)) {
+                console.log('hoge === json');
+                $('#updateCount').val(JSON.parse(hoge).afterCount);
+                var tweets = JSON.parse(hoge).val;
+                for (i = 0; i < tweets.count; i++) {
                     var name = tweets[i].name;
                     var time = tweets[i].time;
                     var comment = tweets[i].comment;
@@ -95,11 +116,10 @@ function checkupdate() {
                             "    </div>" +
                             "</div>";
                     setPost(message);
+//                    checkupdate();
                 }
-
-                checkupdate();
-            }//todo 成功時だけ表示する
-
+            }
+            checkupdate();
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) //通信失敗
         {
@@ -112,7 +132,8 @@ function checkupdate() {
                     );
 //            alert('処理できませんでした、ページを更新して下さい');
         }
-    });
+    }
+    );
 }
 //function jsonStrDecode(str = ''){
 //    var arrs = str.match(/\\u.{4}/g);
@@ -122,34 +143,32 @@ function checkupdate() {
 //    }
 //    return(t);
 //}
-function eraseTweet() {
-
-    if (window.confirm("この発言を削除しますか？")) {
-        return true;
-    }
-    else{
-        return false; 
-    }
-}
-function tweetEdit(tweetId,comment) {
+//function eraseTweet() {
+//
+//    if (window.confirm("この発言を削除しますか？")) {
+//        return true;
+//    } else {
+//        return false;
+//    }
+//}
+function tweetEdit(tweetId, comment) {
     var editComment = window.prompt("変更しない時はキャンセルを押してください", comment);
-    if (editComment != null) {
+    if (!editComment) {
         $.ajax({
             type: "POST", //POSTで渡す
             url: "/tweetEdit", //POST先
             data: {
-                "tweetId":tweetId, //ユーザーID
-                "editComment":editComment, //編集されたコメント
+                "tweetId": tweetId, //ユーザーID
+                "editComment": editComment, //編集されたコメント
             },
             success: function (hoge) //通信成功、dataaddcon.phpからの返り値を受け取る
             {
-                if(hoge*1===0){
+                if (hoge * 1 === 0) {
                     location.reload(true)
+                } else {
+
+                    alert('更新に失敗しました');
                 }
-               else{
-                   
-                   alert('更新に失敗しました');
-               }
 
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) //通信失敗
@@ -167,4 +186,16 @@ function tweetEdit(tweetId,comment) {
     }
 }
 
-
+function isJson(arg) {
+    arg = (typeof arg === "function") ? arg() : arg;
+    if (typeof arg !== "string") {
+        return false;
+    }
+    try {
+        arg = (!JSON) ? eval("(" + arg + ")") : JSON.parse(arg);
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
+;

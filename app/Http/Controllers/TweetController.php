@@ -11,8 +11,8 @@ use DB; //DB操作のため
 use App\Tweet; // モデル定義されてなくて引っかかった
 use App\User;
 
-
-class TweetController extends Controller {
+class TweetController extends Controller
+{
 
     /**
      * Display a listing of the resource.
@@ -85,135 +85,70 @@ class TweetController extends Controller {
 
     public function addTweet() {
         try {
-            $tweet = new Tweet;
-            $comment = Input::get('tweet');
-            $userId = Input::get('userId');
-            $name = Input::get('userName');
-            $threadId = Input::get('threadId');
-            $tweet->comment = e($comment);
-            $tweet->user_id = e($userId);
-            $tweet->thread_id = e($threadId);
-            $tweet->save();
-
-//            $val = [
-//                'name'=>    $name,
-//                'comment'=> $comment,
-//                'time'=>    date('Y/n/j H:i:s'),
-//            ];
-//            $cls = [
-//                'align' => 'text-right',
-//                'offset' => 'col-lg-offset-2',
-//                'panelColor' => 'alert-success',
-//                'labelColor' => 'label-primary',
-//            ];
-
-            $align = 'text-right';
-            $size = 'col-lg-offset-2';
-            $panelColor = 'alert-success';
-            $labelColor = 'label-primary';
-
-//            $buf = $this->returnHtmlTag($val, $cls);
-//            $jsbufs = json_encode($buf);
-//            return $jsbufs;
-            $buf = "<div class=\" col-lg-10 {$size}\">" .
-                    "    <p class=\"{$align}\"><span class=\"label {$labelColor}\">{$name}さん</span></p>" .
-                    "    <div class=\"panel panel-default\" style=\"margin-bottom: 5px; padding: 0;\">" .
-                    "        <div class=\"panel-body {$align} {$panelColor}\" style=\"padding: 5px 10px\">" .
-                    "            <p>" . e($comment) . "</p>" .
-                    "            <small class=\"text-muted\">" . date('Y/n/j H:i:s') . "</small>" .
-                    "        </div>" .
-                    "    </div>" .
-                    "</div>";
-
-            return $buf;
+            $tweet = \Chat::addTweet()
+                    ->getTweet()
+            ;
+            $buf   = $this->setValues($tweet);
+            return json_encode($buf);
         } catch (Exception $e) {
-            return Response::make('1');
+            return Response::make('-1');
         }
     }
 
     public function receiveTweet() {
         $bufs = [];
         try {
-            $userId = Input::get('userId');
-            $threadId = Input::get('threadId');
-            $count = DB::table('tweets')->where('user_id', '!=', $userId)->where('thread_id', '=', $threadId)->count();
-            $tmp = $count;
-            $i = 0;
-            while ($tmp === $count) {
-                if ($i == 10) {
-                    return 0;
-                }
-                $count = DB::table('tweets')->where('user_id', '!=', $userId)->where('thread_id', '=', $threadId)->count();
-                sleep(1);
-                $i++;
-            }
-            $tweetCountDifference = $count - $tmp;
-            $tweets = Tweet::where('user_id', '!=', $userId)
-                    ->orderBy('created_at', 'desc')
-                    ->take($tweetCountDifference)
-                    ->get();
-//            $cls = [
-//                'align' => 'text-right',
-//                'offset' => '',
-//                'panelColor' => 'alert-success',
-//                'labelColor' => 'label-primary',
-//            ];
+            $chat = \Chat::setTweetCount();
+            sleep(3);
 
+            if ($chat->getBeforeCount() === $chat->getAfterCount())
+            {
+                return 0;
+            }
+            $tweets = $chat->recieveTweet()
+                    ->getTweet()
+            ;
             foreach ($tweets as $tweet) {
-                $val = [
-                    'name' => e($this->returnName($tweet)),
-                    'comment' => e($tweet->comment),
-                    'time' => date('Y/n/j H:i:s', strtotime($tweet->created_at)),
-                ];
-                $bufs[] = $val;
+                $bufs[] = $this->setValues($tweet);
             }
-            $jsbufs = json_encode($bufs);
-            return $jsbufs;
+            $json = [
+                'afterCount' => $chat->getAfterCount(),
+                'val'        => $bufs
+            ];
+            return json_encode($json);
+//            $jsbufs = json_encode($bufs);
+//            return $jsbufs;
         } catch (Exception $ex) {
-            return 1;
+            return -1;
         }
     }
 
-    private function returnName($tweet) {
-        try {
-            $name = $tweet->user->name;
-        } catch (Exception $ex) {
-            $name = '名無し';
-        }
-        return $name;
-    }
+    private function setValues($tweet) {
 
-    private function returnHtmlTag($val, $cls) {
-        $buf = "<div class=\" col-lg-10 {$cls['offset']}\">" .
-                "    <p class=\"{$cls['align']}\"><span class=\"label {$cls['labelColor']}\">{$val['name']}さん</span></p>" .
-                "    <div class=\"panel panel-default\" style=\"margin-bottom: 5px; padding: 0;\">" .
-                "        <div class=\"panel-body {$cls['align']} {$cls['panelColor']}\" style=\"padding: 5px 10px\">" .
-                "            <p>{$val['comment']}</p>" .
-                "            <small class=\"text-muted\">{$val['time']}</small>" .
-                "        </div>" .
-                "    </div>" .
-                "</div>";
-        return $buf;
+        $name = is_null($tweet->user) ? 'ななし' : $tweet->user->name;
+        $val  = [
+            'name'    => e($name),
+            'comment' => e($tweet->comment),
+            'time'    => date('Y/n/j H:i:s', strtotime($tweet->created_at)),
+        ];
+        return $val;
     }
 
     public function tweetErase() {
-        $tweetId= Input::get('tweetId');
-        try {
-            DB::table('tweets')->where('tweet_id','=',$tweetId)->delete();
-            return view('user.chat.chat');
-        } catch (Exception $ex) {
-            return 1;
-        }
+        \Chat::eraseTweet();
+        \Session::flash('flash_message', '発言を削除しました。');
+        return redirect('/chat');
     }
+
     public function tweetEdit() {
-        $tweetId= Input::get('tweetId');
-        $editComment= Input::get('editComment');
-       
+        $tweetId     = Input::get('tweetId');
+        $editComment = Input::get('editComment');
+
         try {
-            $tweet = Tweet::where('tweet_id', $tweetId)->first();
+            $tweet          = Tweet::where('tweet_id', $tweetId)->first();
             $tweet->comment = $editComment;
             $tweet->save();
-            $debug = $tweet->comment;
+            $debug          = $tweet->comment;
             return 0;
         } catch (Exception $ex) {
             return 1;

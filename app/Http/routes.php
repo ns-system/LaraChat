@@ -54,8 +54,29 @@ Route::group(['middleware' => ['auth']], function(){
 Route::get('chat', function() {
     return view('user.chat.chat');
 });
-Route::any('tweetsend', 'TweetController@addTweet');
-Route::any('tweetupdate', 'TweetController@receiveTweet');
-Route::any('tweetErase', 'TweetController@tweetErase');
-Route::any('tweetEdit', 'TweetController@tweetEdit');
+Route::any('/chat/add',     'TweetController@addTweet');
+Route::any('/chat/recieve', 'TweetController@receiveTweet');
+Route::any('/chat/erase',   'TweetController@tweetErase');
+Route::any('/chat/edit',    'TweetController@tweetEdit');
 
+Route::get('pay/card',function(){
+    return \Payment::setPrice(200)
+            ->setQuantity(5)
+            ->setOption(['tax'=>1.08])
+            ->getAmount()
+            ->cardPay()
+    ;
+});
+Route::get('pay/cash/{money}',function($money){
+    return \Payment::setPrice(200)
+            ->setQuantity(5)
+            ->setMoney($money)
+            ->setOption(['tax'=>1.08])
+            ->getAmount()
+            ->cashPay()
+    ;
+});
+
+Route::get('info', function(){
+    phpinfo();
+});
