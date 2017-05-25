@@ -88,8 +88,9 @@ class TweetController extends Controller
             $tweet = \Chat::addTweet()
                     ->getTweet()
             ;
-            $buf   = $this->setValues($tweet);
-            return json_encode($buf);
+            return redirect('/chat');
+//            $buf   = $this->setValues($tweet);
+//            return json_encode($buf);
         } catch (Exception $e) {
             return Response::make('-1');
         }
@@ -141,18 +142,19 @@ class TweetController extends Controller
     }
 
     public function tweetEdit() {
-        $tweetId     = Input::get('tweetId');
+        $tweetId     = Input::get('editId');
         $editComment = Input::get('editComment');
+//        echo $tweetId . $editComment;
 
         try {
             $tweet          = Tweet::where('tweet_id', $tweetId)->first();
             $tweet->comment = $editComment;
             $tweet->save();
-            $debug          = $tweet->comment;
-            return 0;
+            \Session::flash('flash_message', '発言を編集しました。');
         } catch (Exception $ex) {
-            return 1;
+            \Session::flash('flash_message', '発言の編集ができませんでした。');
         }
+        return redirect('/chat');
     }
 
 }

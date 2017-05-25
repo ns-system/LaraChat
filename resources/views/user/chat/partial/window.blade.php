@@ -11,7 +11,7 @@ $count  = \App\Tweet::where('thread_id', $thread)->count();
         <input type="hidden" id="userId"   name="userId"   value="{{$user->id}}">
         <input type="hidden" id="threadId" name="threadId" value="{{$thread}}">
         <span class="input-group-btn">
-            <button type="submit" name="add" class="btn btn-success">ボタン</button>
+            <button type="submit" name="add" class="btn btn-success">発言する</button>
         </span>
     </div>
 </form>
